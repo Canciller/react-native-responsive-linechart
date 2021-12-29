@@ -31,11 +31,13 @@ type Props = {
   disableGestures?: boolean
   /** Padding of the chart. Use this instead of setting padding in the `style` prop. */
   padding?: Padding
+  /** Ref */
+  ref?: React.Ref<ChartHandle>
 }
 
 export type ChartHandle = {
   setViewportOrigin: (origin: XYValue) => void
-  panGesture: React.RefObject<any>
+  panGesture: any
 }
 
 const Chart: React.FC<Props> = React.memo(
@@ -70,7 +72,7 @@ const Chart: React.FC<Props> = React.memo(
       }
     }
 
-    React.useImperativeHandle(ref, () => ({ setViewportOrigin, panGesture }))
+    React.useImperativeHandle(ref, () => ({ setViewportOrigin, panGesture: panGesture.current }))
 
     const handleTouchEvent = React.useCallback(
       debounce(

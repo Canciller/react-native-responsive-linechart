@@ -18,10 +18,12 @@ declare type Props = {
     disableGestures?: boolean;
     /** Padding of the chart. Use this instead of setting padding in the `style` prop. */
     padding?: Padding;
+    /** Ref */
+    ref?: React.Ref<ChartHandle>;
 };
 export declare type ChartHandle = {
     setViewportOrigin: (origin: XYValue) => void;
-    panGesture: React.RefObject<any>;
+    panGesture: any;
 };
 declare const Chart: React.FC<Props>;
 export { Chart };
