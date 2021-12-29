@@ -42,7 +42,7 @@ export type ChartHandle = {
 const Chart: React.FC<Props> = React.memo(
   React.forwardRef<ChartHandle, Props>((props, ref) => {
     const { style, children, data = [], padding, xDomain, yDomain, viewport, disableGestures, disableTouch, scrollViewRef} = deepmerge(computeDefaultProps(props), props, {
-      isMergeableObject: (value: any) => value.current !== undefined,
+      isMergeableObject: (value: any) => value && value.current !== undefined,
     });
     const { dimensions, onLayout } = useComponentDimensions()
     const dataDimensions = calculateDataDimensions(dimensions, padding)
