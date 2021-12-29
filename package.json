@@ -69,8 +69,7 @@
   },
   "scripts": {
     "docs:deploy": "./deploy_docs.sh",
-    "prepublish": "yarn tsc",
-    "release": "yarn np",
+    "build": "yarn tsc",
     "test": "yarn jest"
   }
 }
