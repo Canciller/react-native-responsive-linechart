@@ -41,12 +41,12 @@ export type ChartHandle = {
 
 const Chart: React.FC<Props> = React.memo(
   React.forwardRef<ChartHandle, Props>((props, ref) => {
-    const { style, children, data = [], padding, xDomain, yDomain, viewport, disableGestures, disableTouch, scrollViewRef} = deepmerge(computeDefaultProps(props), props, {
-      isMergeableObject: (value: any) => {
-        if(value && value.current !== undefined) return false;
-        return true;
-      }
-    });
+    const propsCopy = React.useMemo(() => {
+      const copy = { ...props }
+      delete copy.scrollViewRef;
+      return copy
+    }, [props]);
+    const { style, children, data = [], padding, xDomain, yDomain, viewport, disableGestures, disableTouch } = deepmerge(computeDefaultProps(propsCopy), propsCopy);
     const { dimensions, onLayout } = useComponentDimensions()
     const dataDimensions = calculateDataDimensions(dimensions, padding)
 
@@ -171,7 +171,7 @@ const Chart: React.FC<Props> = React.memo(
                   onGestureEvent={_onPanGestureEvent}
                   onHandlerStateChange={_onPanGestureEvent}
                   ref={panGesture}
-                  simultaneousHandlers={scrollViewRef}
+                  simultaneousHandlers={props.scrollViewRef}
                 >
                   <Animated.View style={{ width: dimensions.width, height: dimensions.height }}>
                     <ChartContextProvider
@@ -210,7 +210,6 @@ const Chart: React.FC<Props> = React.memo(
       </View>
     )
   }),
-  fastEqual
 )
 
 export { Chart }
