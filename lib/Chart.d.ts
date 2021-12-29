@@ -23,7 +23,7 @@ declare type Props = {
 };
 export declare type ChartHandle = {
     setViewportOrigin: (origin: XYValue) => void;
-    panGesture: any;
+    panGestureRef: React.RefObject<any>;
 };
 declare const Chart: React.FC<Props>;
 export { Chart };

@@ -37,7 +37,7 @@ type Props = {
 
 export type ChartHandle = {
   setViewportOrigin: (origin: XYValue) => void
-  panGesture: any
+  panGestureRef: React.RefObject<any>
 }
 
 const Chart: React.FC<Props> = React.memo(
@@ -72,7 +72,7 @@ const Chart: React.FC<Props> = React.memo(
       }
     }
 
-    React.useImperativeHandle(ref, () => ({ setViewportOrigin, panGesture: panGesture.current }))
+    React.useImperativeHandle(ref, () => ({ setViewportOrigin, panGestureRef: panGesture }))
 
     const handleTouchEvent = React.useCallback(
       debounce(
