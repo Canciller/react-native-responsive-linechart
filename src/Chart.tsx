@@ -31,18 +31,17 @@ type Props = {
   disableGestures?: boolean
   /** Padding of the chart. Use this instead of setting padding in the `style` prop. */
   padding?: Padding
-  /** Ref */
-  ref?: React.Ref<ChartHandle>
+  /** ScrollView ref */
+  scrollViewRef?: React.RefObject<any>
 }
 
 export type ChartHandle = {
   setViewportOrigin: (origin: XYValue) => void
-  panGestureRef: React.RefObject<any>
 }
 
 const Chart: React.FC<Props> = React.memo(
   React.forwardRef<ChartHandle, Props>((props, ref) => {
-    const { style, children, data = [], padding, xDomain, yDomain, viewport, disableGestures, disableTouch } = deepmerge(computeDefaultProps(props), props)
+    const { style, children, data = [], padding, xDomain, yDomain, viewport, disableGestures, disableTouch, scrollViewRef} = deepmerge(computeDefaultProps(props), props)
     const { dimensions, onLayout } = useComponentDimensions()
     const dataDimensions = calculateDataDimensions(dimensions, padding)
 
@@ -72,7 +71,7 @@ const Chart: React.FC<Props> = React.memo(
       }
     }
 
-    React.useImperativeHandle(ref, () => ({ setViewportOrigin, panGestureRef: panGesture }))
+    React.useImperativeHandle(ref, () => ({ setViewportOrigin }))
 
     const handleTouchEvent = React.useCallback(
       debounce(
@@ -167,6 +166,7 @@ const Chart: React.FC<Props> = React.memo(
                   onGestureEvent={_onPanGestureEvent}
                   onHandlerStateChange={_onPanGestureEvent}
                   ref={panGesture}
+                  simultaneousHandlers={scrollViewRef}
                 >
                   <Animated.View style={{ width: dimensions.width, height: dimensions.height }}>
                     <ChartContextProvider
